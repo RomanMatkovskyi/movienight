@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Wrapper } from "./HomePageMovies.styled";
+import { Wrapper, MovieTitle } from "./HomePageMovies.styled";
+import { useNowPlaying } from "../../hooks/useNowPlaying";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -12,13 +12,14 @@ const responsive = {
 };
 
 const HomePageMovies = () => {
-  const [films, setFilms] = useState([]);
   const data = useSelector((state) => state.films.items);
-  console.log("Films", data);
+  const { nowPlayingMovies, nowPlayingLoading, nowPlayingError } =
+    useNowPlaying();
 
   return (
     <Wrapper>
       <div>
+        <MovieTitle>Now Playing</MovieTitle>
         <Carousel
           responsive={responsive}
           arrows={true}
@@ -26,24 +27,25 @@ const HomePageMovies = () => {
           infinite={true}
           keyBoardControl={true}
           slidesToSlide={6}
-          centerMode={true}
+          // centerMode={true}
           itemClass="carousel-item-spacing"
           // autoPlay // To add AutoPlay
           // autoPlaySpeed={2000}
         >
-          {Array.isArray(data?.results) &&
+          {/* {Array.isArray(data?.results) &&
             data.results.length > 0 &&
-            data.results.map((film) => {
-              return (
-                <div key={film.id}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
-                    alt=""
-                  />
-                  <h2>{film.original_title}</h2>
-                </div>
-              );
-            })}
+            data.results.map((film) => { */}
+          {nowPlayingMovies.map((film) => {
+            return (
+              <div key={film.id}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
+                  alt=""
+                />
+                <MovieTitle>{film.original_title}</MovieTitle>
+              </div>
+            );
+          })}
         </Carousel>
       </div>
     </Wrapper>

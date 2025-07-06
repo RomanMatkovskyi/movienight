@@ -1,20 +1,21 @@
 import "./App.css";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchFilms } from "./redux/films/operations";
-import HomePageMovies from "./components/HomePageMovies/HomePageMovies";
+import { Route, Routes } from "react-router";
+
+import HomePage from "./pages/HomePage";
+import TvShowsPage from "./pages/TvShowsPage";
+import ErrorPage from "./pages/ErrorPage";
+import SharedLayout from "./pages/SharedLayout";
 
 function App() {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.films);
-
-  useEffect(() => {
-    dispatch(fetchFilms());
-  }, [dispatch]);
-
   return (
     <div className="container">
-      <HomePageMovies />
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/tv" element={<TvShowsPage />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

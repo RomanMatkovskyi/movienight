@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchFilms } from "./operations";
+import { fetchFilms, fetchGenres } from "./operations";
 
 const initialState = {
   items: [],
+  genres: [],
   isLoading: false,
   error: null,
 };
@@ -21,6 +22,18 @@ export const filmsSlice = createSlice({
         state.items = action.payload;
       })
       .addCase(fetchFilms.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchGenres.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchGenres.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.genres = action.payload;
+      })
+      .addCase(fetchGenres.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

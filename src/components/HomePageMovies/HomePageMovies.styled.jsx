@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  background-color: #ff5300;
+export const Wrapper = styled.div``;
 
-  &.carousel-item-spacing {
-    padding: 0 5px;
-  }
+export const MovieTitle = styled.h2`
+  color: #fff;
 `;
