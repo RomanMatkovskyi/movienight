@@ -1,4 +1,6 @@
-import { useTopRated } from "../../hooks/useTopRated";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -9,7 +11,37 @@ const responsive = {
 };
 
 const TopRatedMovies = () => {
-  const { topRatedMovies, topRatedLoading, topRatedError } = useTopRated();
+  const [topRatedMovies, setTopRated] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTopRated = () => {
+      setIsLoading(true);
+      axios
+        .get(
+          "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setTopRated(response.data.results);
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    fetchTopRated();
+  }, []);
+
   return (
     <div>
       <h2>Top Rated Movies</h2>

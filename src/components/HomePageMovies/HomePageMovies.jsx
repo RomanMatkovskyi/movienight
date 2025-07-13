@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Wrapper, MovieTitle } from "./HomePageMovies.styled";
-import { useNowPlaying } from "../../hooks/useNowPlaying";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -12,14 +13,41 @@ const responsive = {
 };
 
 const HomePageMovies = () => {
-  const data = useSelector((state) => state.films.items);
-  const { nowPlayingMovies, nowPlayingLoading, nowPlayingError } =
-    useNowPlaying();
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchNowPlaying = () => {
+      setIsLoading(true);
+      axios
+        .get(
+          "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setNowPlayingMovies(response.data.results);
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+    fetchNowPlaying();
+  }, []);
 
   return (
     <Wrapper>
       <div>
         <MovieTitle>Now Playing</MovieTitle>
+        {isLoading && <p>Data is loading ...</p>}
         <Carousel
           responsive={responsive}
           arrows={true}

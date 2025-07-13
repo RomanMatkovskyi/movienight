@@ -35,8 +35,24 @@ export const fetchGenres = createAsyncThunk(
         "/genre/movie/list?language=en",
         options
       );
-      console.log("FETCH", response);
       return response.data.genres;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const fetchFilmByGenre = createAsyncThunk(
+  "films/fetchFilmByGenre",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `/discover/movie?with_genres=${id}&language=en-US`,
+        options
+      );
+      console.log("FIlms", response);
+
+      return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }

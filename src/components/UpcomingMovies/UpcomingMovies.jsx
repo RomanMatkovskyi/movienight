@@ -1,4 +1,5 @@
-import { useUpcoming } from "../../hooks/useUpcoming";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -9,10 +10,41 @@ const responsive = {
 };
 
 const UpcomingMovies = () => {
-  const { upcomingMovies, upcomingLoading, upcomingError } = useUpcoming();
+  const [upcomingMovies, setUpcoming] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUpcoming = () => {
+      setIsLoading(true);
+      axios
+        .get(
+          "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setUpcoming(response.data.results);
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    fetchUpcoming();
+  }, []);
+
   return (
     <div>
       <h2>Upcoming movies</h2>
+      {isLoading && <p>Data is loading ...</p>}
       <Carousel
         responsive={responsive}
         arrows={true}
