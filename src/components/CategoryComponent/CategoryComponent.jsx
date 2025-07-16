@@ -13,17 +13,17 @@ const responsive = {
 
 const CategoryComponent = () => {
   const genres = useSelector((state) => state.films.genres);
-  const [selectedId, setSelectedId] = useState(35);
+  const [selectedGenre, setSelectedGenre] = useState(35);
   const [films, setFilms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(null);
 
   useEffect(() => {
-    const fetchNowPlaying = () => {
+    const fetchGenre = () => {
       setIsLoading(true);
       axios
         .get(
-          `https://api.themoviedb.org/3/discover/movie?with_genres=${selectedId}&language=en-US`,
+          `https://api.themoviedb.org/3/discover/movie?with_genres=${selectedGenre}&language=en-US`,
           {
             headers: {
               Authorization: import.meta.env.VITE_API_KEY,
@@ -42,8 +42,8 @@ const CategoryComponent = () => {
         });
     };
 
-    fetchNowPlaying();
-  }, [selectedId]);
+    fetchGenre();
+  }, [selectedGenre]);
 
   return (
     <div>
@@ -57,7 +57,7 @@ const CategoryComponent = () => {
                 <GenreTitle
                   type="button"
                   onClick={() => {
-                    setSelectedId(genre.id);
+                    setSelectedGenre(genre.id);
                   }}
                 >
                   {genre.name}

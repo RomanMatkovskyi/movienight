@@ -52,7 +52,6 @@ const UpcomingMovies = () => {
         infinite={true}
         keyBoardControl={true}
         slidesToSlide={7}
-        // itemClass="carousel-item-spacing"
         // autoPlay // To add AutoPlay
         // autoPlaySpeed={2000}
       >
