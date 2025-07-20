@@ -1,35 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import {
-  GalleryWrapper,
-  MovieItemTitle,
-  LoadMoreBtn,
-} from "./MovieCollection.styled";
 
-import Filter from "../Filter/Filter";
+import { GalleryWrapper, ShowItemTitle } from "./TvShowsCollection.styled";
 
-const MovieCollection = () => {
+const TvShowsCollection = () => {
   const navigate = useNavigate();
-
-  const [movies, setMovies] = useState([]);
+  const [shows, setShows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedGenres, setSelectedGenres] = useState([]);
 
   function buildDiscoverUrl(selectedGenres = [], options = {}) {
-    const baseUrl = "https://api.themoviedb.org/3/discover/movie";
+    const baseUrl = "https://api.themoviedb.org/3/discover/tv";
 
     const params = new URLSearchParams({
       language: options.language || "en-US",
       sort_by: options.sortBy || "popularity.desc",
       page: options.page?.toString() || "1",
+      include_adult: options.adults || true,
+      include_null_first_air_dates: options.firstAir || false,
     });
 
-    if (selectedGenres.length > 0) {
-      params.append("with_genres", selectedGenres.join(","));
-    }
+    // if (selectedGenres.length > 0) {
+    //   params.append("with_genres", selectedGenres.join(","));
+    // }
 
     if (options.year) {
       params.append("primary_release_year", options.year.toString());
@@ -43,17 +37,17 @@ const MovieCollection = () => {
   }
 
   useEffect(() => {
-    const fetchMovies = () => {
+    const fetchShows = () => {
       setIsLoading(true);
       axios
-        .get(buildDiscoverUrl(selectedGenres, { page: currentPage }), {
+        .get(buildDiscoverUrl(), {
           headers: {
             Authorization: import.meta.env.VITE_API_KEY,
             accept: "application/json",
           },
         })
         .then((response) => {
-          setMovies((prevState) => {
+          setShows((prevState) => {
             if (currentPage === 1) {
               return response.data.results;
             } else {
@@ -69,41 +63,35 @@ const MovieCollection = () => {
         });
     };
 
-    fetchMovies();
-  }, [selectedGenres, currentPage]);
+    fetchShows();
+  }, [currentPage]);
 
   return (
     <div>
-      <Filter
-        selectedGenres={selectedGenres}
-        setSelectedGenres={setSelectedGenres}
-        setCurrentPage={setCurrentPage}
-        setMovies={setMovies}
-      />
       <GalleryWrapper>
-        {movies.map((movie) => {
-          if (!movie.poster_path || !movie.original_title) return null;
+        {shows.map((show) => {
+          if (!show.poster_path || !show.original_name) return null;
           return (
-            <div key={movie.id}>
+            <div key={show.id}>
               <img
-                src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
-                alt={movie.original_title}
+                src={`https://image.tmdb.org/t/p/w185${show.poster_path}`}
+                alt={show.original_name}
               />
-              <MovieItemTitle>{movie.original_title}</MovieItemTitle>
+              <ShowItemTitle>{show.original_name}</ShowItemTitle>
             </div>
           );
         })}
       </GalleryWrapper>
-      <LoadMoreBtn
+      <button
         type="button"
         onClick={() => {
           setCurrentPage((prevState) => prevState + 1);
         }}
       >
         Load more
-      </LoadMoreBtn>
+      </button>
     </div>
   );
 };
 
-export default MovieCollection;
+export default TvShowsCollection;

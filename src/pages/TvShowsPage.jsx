@@ -1,7 +1,11 @@
-import React from "react";
+import TvShowsCollection from "../components/TvShowsCollection/TvShowsCollection";
 
 const TvShowsPage = () => {
-  return <div>TvShowsPage</div>;
+  return (
+    <div>
+      <TvShowsCollection />
+    </div>
+  );
 };
 
 export default TvShowsPage;

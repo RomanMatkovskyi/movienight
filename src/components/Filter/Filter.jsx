@@ -1,13 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-import { GenresTitle, GenresContainer, GenresItemTitle } from "./Filter.styled";
+import {
+  FilterCatalogBtn,
+  GenresTitle,
+  GenresContainer,
+  GenresItemTitle,
+} from "./Filter.styled";
 
-const Filter = ({ selectedGenres, setSelectedGenres }) => {
+const Filter = ({
+  selectedGenres,
+  setSelectedGenres,
+  setCurrentPage,
+  setMovies,
+}) => {
+  const firstRender = useRef(false);
   const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const [query, setQuery] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSelectedGenres([]);
+    setMovies([]);
+    setQuery(e.target.elements.query.value);
+  };
+
+  // fetch Genre
   useEffect(() => {
     const fetchGenre = () => {
       setIsLoading(true);
@@ -31,38 +53,86 @@ const Filter = ({ selectedGenres, setSelectedGenres }) => {
 
     fetchGenre();
   }, []);
+
+  // find search movie
+  useEffect(() => {
+    if (!firstRender.current) {
+      firstRender.current = true;
+      return;
+    }
+
+    const fetchSearchMovie = (q) => {
+      axios
+        .get(
+          `https://api.themoviedb.org/3/search/movie?query=${q}&include_adult=false&language=en-US&page=1`,
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setMovies(response.data.results);
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {});
+    };
+
+    fetchSearchMovie(query);
+  }, [query]);
+
   return (
     <div>
       <h2>Filter by</h2>
+      <FilterCatalogBtn
+        type="button"
+        onClick={() => setIsOpen((prevState) => !prevState)}
+      >
+        {isOpen ? "Close" : "Open"}
+      </FilterCatalogBtn>
+      {isOpen && (
+        <div>
+          <GenresTitle>Genres</GenresTitle>
+          <GenresContainer>
+            {genres.map((genre) => {
+              return (
+                <GenresItemTitle
+                  key={genre.id}
+                  type="button"
+                  onClick={() => {
+                    setCurrentPage(1);
+                    setSelectedGenres((prevState) => {
+                      if (prevState.includes(genre.id)) {
+                        return prevState.filter((id) => id !== genre.id);
+                      }
+                      return [...prevState, genre.id];
+                    });
+                  }}
+                  className={
+                    Array.isArray(selectedGenres) &&
+                    selectedGenres.length > 0 &&
+                    selectedGenres.includes(genre.id)
+                      ? "active"
+                      : ""
+                  }
+                >
+                  {genre.name}
+                </GenresItemTitle>
+              );
+            })}
+          </GenresContainer>
+        </div>
+      )}
       <div>
-        <GenresTitle>Genres</GenresTitle>
-        <GenresContainer>
-          {genres.map((genre) => {
-            return (
-              <GenresItemTitle
-                key={genre.id}
-                type="button"
-                onClick={() => {
-                  setSelectedGenres((prevState) => {
-                    if (prevState.includes(genre.id)) {
-                      return prevState.filter((id) => id !== genre.id);
-                    }
-                    return [...prevState, genre.id];
-                  });
-                }}
-                className={
-                  Array.isArray(selectedGenres) &&
-                  selectedGenres.length > 0 &&
-                  selectedGenres.includes(genre.id)
-                    ? "active"
-                    : ""
-                }
-              >
-                {genre.name}
-              </GenresItemTitle>
-            );
-          })}
-        </GenresContainer>
+        <form onSubmit={onSubmit}>
+          <label htmlFor="query" style={{ color: "white" }}>
+            Search Movie
+          </label>
+          <input type="text" id="query" name="query" />
+        </form>
       </div>
     </div>
   );

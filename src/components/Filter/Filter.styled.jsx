@@ -1,5 +1,13 @@
 import styled from "styled-components";
 
+export const FilterCatalogBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+`;
+
 export const GenresTitle = styled.p`
   margin-top: 10px;
   margin-bottom: 10px;

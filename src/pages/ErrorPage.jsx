@@ -1,7 +1,16 @@
-import React from "react";
+import { useLocation } from "react-router";
 
 const ErrorPage = () => {
-  return <div>ErrorPage - 404</div>;
+  const location = useLocation();
+  const message = location.state?.error;
+  console.log("Error", message);
+
+  return (
+    <div>
+      <h1>Uuuppppsss ... Something went wrong....</h1>
+      <p>Reason: {message}</p>
+    </div>
+  );
 };
 
 export default ErrorPage;
