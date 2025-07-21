@@ -6,7 +6,7 @@ import {
   GenresTitle,
   GenresContainer,
   GenresItemTitle,
-} from "./Filter.styled";
+} from "./MovieFilter.styled";
 
 const Filter = ({
   selectedGenres,

@@ -55,7 +55,6 @@ const HomePageMovies = () => {
           infinite={true}
           keyBoardControl={true}
           slidesToSlide={6}
-          // centerMode={true}
           itemClass="carousel-item-spacing"
           // autoPlay // To add AutoPlay
           // autoPlaySpeed={2000}

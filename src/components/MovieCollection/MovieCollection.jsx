@@ -7,7 +7,7 @@ import {
   LoadMoreBtn,
 } from "./MovieCollection.styled";
 
-import Filter from "../Filter/Filter";
+import Filter from "../MovieFilter/MovieFilter";
 
 const MovieCollection = () => {
   const navigate = useNavigate();
@@ -72,6 +72,10 @@ const MovieCollection = () => {
     fetchMovies();
   }, [selectedGenres, currentPage]);
 
+  const uniqueMovies = movies.filter(
+    (value, index, self) => index === self.findIndex((m) => m.id === value.id)
+  );
+
   return (
     <div>
       <Filter
@@ -81,7 +85,7 @@ const MovieCollection = () => {
         setMovies={setMovies}
       />
       <GalleryWrapper>
-        {movies.map((movie) => {
+        {uniqueMovies.map((movie) => {
           if (!movie.poster_path || !movie.original_title) return null;
           return (
             <div key={movie.id}>

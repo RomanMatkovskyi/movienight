@@ -53,8 +53,8 @@ const TopRatedMovies = () => {
         keyBoardControl={true}
         slidesToSlide={1}
         itemClass="carousel-item-spacing"
-        // autoPlay // To add AutoPlay
-        // autoPlaySpeed={2000}
+        autoPlay // To add AutoPlay
+        autoPlaySpeed={2000}
       >
         {topRatedMovies.map((film) => {
           return (
