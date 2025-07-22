@@ -19,6 +19,7 @@ const TvShowsCollection = () => {
         shows={shows}
         setShows={setShows}
         currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
       />
       <GalleryWrapper>
         {uniqueShows.map((show) => {

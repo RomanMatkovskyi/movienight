@@ -2,15 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { GenresContainer, GenresItemTitle } from "./TvShowFilter.styled";
 
-const TvShowFilter = ({ shows, setShows, currentPage }) => {
+const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
   const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  //   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
-
-  const [noDataMessage, setNoDataMess] = useState(false);
 
   function buildDiscoverUrl(selectedGenres = [], options = {}) {
     const baseUrl = "https://api.themoviedb.org/3/discover/tv";
@@ -77,7 +73,6 @@ const TvShowFilter = ({ shows, setShows, currentPage }) => {
         .then((response) => {
           setShows((prevState) => {
             if (currentPage === 1) {
-              setNoDataMess(false);
               return response.data.results;
             } else {
               return [...prevState, ...response.data.results];

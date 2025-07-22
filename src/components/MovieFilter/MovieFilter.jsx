@@ -86,46 +86,38 @@ const Filter = ({
 
   return (
     <div>
-      <h2>Filter by</h2>
-      <FilterCatalogBtn
-        type="button"
-        onClick={() => setIsOpen((prevState) => !prevState)}
-      >
-        {isOpen ? "Close" : "Open"}
-      </FilterCatalogBtn>
-      {isOpen && (
-        <div>
-          <GenresTitle>Genres</GenresTitle>
-          <GenresContainer>
-            {genres.map((genre) => {
-              return (
-                <GenresItemTitle
-                  key={genre.id}
-                  type="button"
-                  onClick={() => {
-                    setCurrentPage(1);
-                    setSelectedGenres((prevState) => {
-                      if (prevState.includes(genre.id)) {
-                        return prevState.filter((id) => id !== genre.id);
-                      }
-                      return [...prevState, genre.id];
-                    });
-                  }}
-                  className={
-                    Array.isArray(selectedGenres) &&
-                    selectedGenres.length > 0 &&
-                    selectedGenres.includes(genre.id)
-                      ? "active"
-                      : ""
-                  }
-                >
-                  {genre.name}
-                </GenresItemTitle>
-              );
-            })}
-          </GenresContainer>
-        </div>
-      )}
+      <h2>Filter by genre</h2>
+      <div>
+        <GenresContainer>
+          {genres.map((genre) => {
+            return (
+              <GenresItemTitle
+                key={genre.id}
+                type="button"
+                onClick={() => {
+                  setCurrentPage(1);
+                  setSelectedGenres((prevState) => {
+                    if (prevState.includes(genre.id)) {
+                      return prevState.filter((id) => id !== genre.id);
+                    }
+                    return [...prevState, genre.id];
+                  });
+                }}
+                className={
+                  Array.isArray(selectedGenres) &&
+                  selectedGenres.length > 0 &&
+                  selectedGenres.includes(genre.id)
+                    ? "active"
+                    : ""
+                }
+              >
+                {genre.name}
+              </GenresItemTitle>
+            );
+          })}
+        </GenresContainer>
+      </div>
+
       <div>
         <form onSubmit={onSubmit}>
           <label htmlFor="query" style={{ color: "white" }}>

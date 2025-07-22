@@ -35,6 +35,8 @@ export const fetchGenres = createAsyncThunk(
         "/genre/movie/list?language=en",
         options
       );
+      console.log("genre", response.data.genres);
+
       return response.data.genres;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
