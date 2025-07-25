@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import {
   GalleryWrapper,
@@ -7,16 +7,18 @@ import {
   LoadMoreBtn,
 } from "./MovieCollection.styled";
 
-import Filter from "../MovieFilter/MovieFilter";
+import MovieFilter from "../MovieFilter/MovieFilter";
 
 const MovieCollection = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  let mainPageSelectedGenre = [location.state?.selectedGenre] || [];
 
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState(mainPageSelectedGenre);
 
   function buildDiscoverUrl(selectedGenres = [], options = {}) {
     const baseUrl = "https://api.themoviedb.org/3/discover/movie";
@@ -78,7 +80,7 @@ const MovieCollection = () => {
 
   return (
     <div>
-      <Filter
+      <MovieFilter
         selectedGenres={selectedGenres}
         setSelectedGenres={setSelectedGenres}
         setCurrentPage={setCurrentPage}

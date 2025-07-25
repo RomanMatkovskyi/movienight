@@ -4,6 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { NavLink } from "react-router";
 
 const responsive = {
   desktop: { breakpoint: { max: 1440, min: 1024 }, items: 7 },
@@ -51,7 +52,7 @@ const CategoryComponent = () => {
       <Wrapper>
         {Array.isArray(genres) &&
           genres.length > 0 &&
-          genres.slice(0, 10).map((genre) => {
+          genres.map((genre) => {
             return (
               <li key={genre.id}>
                 <GenreTitle
@@ -94,6 +95,9 @@ const CategoryComponent = () => {
             })}
         </Carousel>
       </div>
+      <NavLink to={"/movies"} state={{ selectedGenre: selectedGenre }}>
+        Get More
+      </NavLink>
     </div>
   );
 };

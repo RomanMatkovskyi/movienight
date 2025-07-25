@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { GenresContainer, GenresItemTitle } from "./TvShowFilter.styled";
 
 const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
+  const firstRender = useRef(false);
+
   const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
+  const [query, setQuery] = useState("");
 
   function buildDiscoverUrl(selectedGenres = [], options = {}) {
     const baseUrl = "https://api.themoviedb.org/3/discover/tv";
@@ -33,6 +36,13 @@ const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
 
     return `${baseUrl}?${params.toString()}`;
   }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSelectedGenres([]);
+    setShows([]);
+    setQuery(e.target.elements.query.value);
+  };
 
   // fetch Genre
   useEffect(() => {
@@ -90,6 +100,38 @@ const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
     fetchShows();
   }, [currentPage, selectedGenres]);
 
+  // find tv show
+  useEffect(() => {
+    if (!firstRender.current) {
+      firstRender.current = true;
+      return;
+    }
+
+    const fetchTvShows = (q) => {
+      axios
+        .get(
+          `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(
+            q
+          )}&include_adult=false&language=en-US&page=1`,
+          {
+            headers: {
+              Authorization: import.meta.env.VITE_API_KEY,
+              accept: "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setShows(response.data.results);
+        })
+        .catch((error) => {
+          setError(error.message);
+        })
+        .finally(() => {});
+    };
+
+    fetchTvShows(query);
+  }, [query]);
+
   return (
     <div>
       <GenresContainer>
@@ -121,6 +163,12 @@ const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
           );
         })}
       </GenresContainer>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="query" style={{ color: "white" }}>
+          Search Tv Shows
+        </label>
+        <input type="text" id="query" name="query" />
+      </form>
       {shows.length === 0 && <p>No TV shows found ... </p>}
     </div>
   );

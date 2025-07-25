@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import TvShowsPage from "./pages/TvShowsPage";
@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/tv" element={<TvShowsPage />} />
-          <Route path="/movies" element={<MoviePage />} />
+          <Route path="tv" element={<TvShowsPage />} />
+          <Route path="movies" element={<MoviePage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
