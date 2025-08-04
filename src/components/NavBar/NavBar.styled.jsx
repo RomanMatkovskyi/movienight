@@ -7,6 +7,9 @@ export const Container = styled.div`
 `;
 
 export const NavLinkStyled = styled(NavLink)`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 20px;
   color: #fff;
   text-decoration: none;
   transition: color 0.3s ease-in-out;

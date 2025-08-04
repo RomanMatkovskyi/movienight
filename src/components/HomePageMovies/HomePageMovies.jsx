@@ -1,10 +1,14 @@
-import { useSelector } from "react-redux";
-import { Wrapper, MovieTitle } from "./HomePageMovies.styled";
 import { useState, useEffect } from "react";
-import axios from "axios";
-
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import axios from "axios";
+
+import {
+  Wrapper,
+  CategoryTitle,
+  MovieTitle,
+  ItemWrapper,
+} from "./HomePageMovies.styled";
 
 const responsive = {
   desktop: { breakpoint: { max: 1440, min: 1024 }, items: 7 },
@@ -46,7 +50,7 @@ const HomePageMovies = () => {
   return (
     <Wrapper>
       <div>
-        <MovieTitle>Now Playing</MovieTitle>
+        <CategoryTitle>Now Playing</CategoryTitle>
         {isLoading && <p>Data is loading ...</p>}
         <Carousel
           responsive={responsive}
@@ -56,21 +60,18 @@ const HomePageMovies = () => {
           keyBoardControl={true}
           slidesToSlide={6}
           itemClass="carousel-item-spacing"
-          // autoPlay // To add AutoPlay
-          // autoPlaySpeed={2000}
         >
-          {/* {Array.isArray(data?.results) &&
-            data.results.length > 0 &&
-            data.results.map((film) => { */}
           {nowPlayingMovies.map((film) => {
             return (
-              <div key={film.id}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
-                  alt=""
-                />
-                <MovieTitle>{film.original_title}</MovieTitle>
-              </div>
+              <ItemWrapper>
+                <div key={film.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
+                    alt=""
+                  />
+                  <MovieTitle>{film.original_title}</MovieTitle>
+                </div>
+              </ItemWrapper>
             );
           })}
         </Carousel>

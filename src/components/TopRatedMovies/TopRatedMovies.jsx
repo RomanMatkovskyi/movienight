@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Wrapper,
+  CategoryTitle,
+  MovieImg,
+  MovieTitle,
+} from "./TopRatedMovies.styled";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -43,8 +49,8 @@ const TopRatedMovies = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Top Rated Movies</h2>
+    <Wrapper>
+      <CategoryTitle>Top Rated Movies</CategoryTitle>
       <Carousel
         responsive={responsive}
         arrows={true}
@@ -59,16 +65,16 @@ const TopRatedMovies = () => {
         {topRatedMovies.map((film) => {
           return (
             <div key={film.id}>
-              <img
-                src={`https://image.tmdb.org/t/p/w1280${film.backdrop_path}`}
+              <MovieImg
+                src={`https://image.tmdb.org/t/p/original${film.backdrop_path}`}
                 alt={film.original_title}
               />
-              <h3>{film.original_title}</h3>
+              <MovieTitle>{film.original_title}</MovieTitle>
             </div>
           );
         })}
       </Carousel>
-    </div>
+    </Wrapper>
   );
 };
 

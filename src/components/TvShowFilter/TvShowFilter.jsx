@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { GenresContainer, GenresItemTitle } from "./TvShowFilter.styled";
+import {
+  GenresContainer,
+  GenresItemTitle,
+  FormLabel,
+} from "./TvShowFilter.styled";
 
 const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
   const firstRender = useRef(false);
@@ -164,12 +168,11 @@ const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
         })}
       </GenresContainer>
       <form onSubmit={onSubmit}>
-        <label htmlFor="query" style={{ color: "white" }}>
+        <FormLabel htmlFor="query" style={{ color: "white" }}>
           Search Tv Shows
-        </label>
+        </FormLabel>
         <input type="text" id="query" name="query" />
       </form>
-      {shows.length === 0 && <p>No TV shows found ... </p>}
     </div>
   );
 };

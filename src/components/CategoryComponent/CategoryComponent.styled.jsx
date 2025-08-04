@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import { NavLink } from "react-router";
+
+export const SectionWrapper = styled.div`
+  padding-bottom: 100px;
+`;
 
 export const Wrapper = styled.ul`
   margin-bottom: 20px;
@@ -8,7 +13,16 @@ export const Wrapper = styled.ul`
   gap: 20px;
 `;
 
+export const CategoryTitle = styled.h2`
+  padding-bottom: 15px;
+  font-size: 30px;
+  color: #fff;
+`;
+
 export const GenreTitle = styled.button`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 15px;
   color: #fff;
   background-color: transparent;
   border: none;
@@ -27,4 +41,20 @@ export const GenreTitle = styled.button`
 export const ItemWrapper = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+export const MovieTitle = styled.h3`
+  width: 154px;
+  margin-top: 8px;
+  font-size: 16px;
+  color: #fff;
+`;
+
+export const GetMoreLink = styled(NavLink)`
+  display: block;
+  width: 126px;
+  margin-left: auto;
+  margin-right: 10px;
+  text-decoration: none;
+  color: #fff;
 `;

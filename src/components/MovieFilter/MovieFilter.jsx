@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 import {
-  FilterCatalogBtn,
-  GenresTitle,
+  SectionTitleWrapper,
   GenresContainer,
   GenresItemTitle,
+  FormLabel,
 } from "./MovieFilter.styled";
 
 const Filter = ({
@@ -18,8 +18,6 @@ const Filter = ({
   const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-
   const [query, setQuery] = useState("");
 
   const onSubmit = (e) => {
@@ -86,8 +84,8 @@ const Filter = ({
 
   return (
     <div>
-      <h2>Filter by genre</h2>
-      <div>
+      <SectionTitleWrapper>
+        <h2>Filter by genre</h2>
         <GenresContainer>
           {genres.map((genre) => {
             return (
@@ -116,13 +114,13 @@ const Filter = ({
             );
           })}
         </GenresContainer>
-      </div>
+      </SectionTitleWrapper>
 
       <div>
         <form onSubmit={onSubmit}>
-          <label htmlFor="query" style={{ color: "white" }}>
+          <FormLabel htmlFor="query" style={{ color: "white" }}>
             Search Movie
-          </label>
+          </FormLabel>
           <input type="text" id="query" name="query" />
         </form>
       </div>

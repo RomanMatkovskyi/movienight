@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-
+import { useState } from "react";
 import TvShowFilter from "../TvShowFilter/TvShowFilter";
-import { GalleryWrapper, ShowItemTitle } from "./TvShowsCollection.styled";
+import {
+  GalleryWrapper,
+  ShowItemTitle,
+  LoadMoreBtn,
+  NoMovieTitle,
+} from "./TvShowsCollection.styled";
 
 const TvShowsCollection = () => {
-  const navigate = useNavigate();
   const [shows, setShows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,12 +23,12 @@ const TvShowsCollection = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
+      {shows.length === 0 && !isLoading && (
+        <NoMovieTitle>No TV shows found ... </NoMovieTitle>
+      )}
       <GalleryWrapper>
         {uniqueShows.map((show) => {
           if (!show.poster_path || !show.original_name) return null;
-          if (shows.includes(show.id)) {
-            return null;
-          }
           return (
             <div key={show.id}>
               <img
@@ -38,14 +40,16 @@ const TvShowsCollection = () => {
           );
         })}
       </GalleryWrapper>
-      <button
-        type="button"
-        onClick={() => {
-          setCurrentPage((prevState) => prevState + 1);
-        }}
-      >
-        Load more
-      </button>
+      {!isLoading && shows.length >= 20 && (
+        <LoadMoreBtn
+          type="button"
+          onClick={() => {
+            setCurrentPage((prevState) => prevState + 1);
+          }}
+        >
+          Load more
+        </LoadMoreBtn>
+      )}
     </div>
   );
 };

@@ -9,6 +9,9 @@ export const GalleryWrapper = styled.div`
 `;
 
 export const MovieItemTitle = styled.h3`
+  margin-top: 10px;
+  font-size: 18px;
+  color: #fff;
   width: 185px;
 `;
 
@@ -24,4 +27,10 @@ export const LoadMoreBtn = styled.button`
   &:hover {
     color: #ff5300;
   }
+`;
+
+export const NoMovieTitle = styled.p`
+  margin-top: 20px;
+  font-size: 20px;
+  color: #fff;
 `;

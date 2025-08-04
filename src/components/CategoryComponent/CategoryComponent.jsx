@@ -1,10 +1,18 @@
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Wrapper, GenreTitle, ItemWrapper } from "./CategoryComponent.styled";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink } from "react-router";
+
+import {
+  SectionWrapper,
+  Wrapper,
+  GenreTitle,
+  ItemWrapper,
+  CategoryTitle,
+  MovieTitle,
+  GetMoreLink,
+} from "./CategoryComponent.styled";
 
 const responsive = {
   desktop: { breakpoint: { max: 1440, min: 1024 }, items: 7 },
@@ -13,7 +21,7 @@ const responsive = {
 };
 
 const CategoryComponent = () => {
-  const genres = useSelector((state) => state.films.genres);
+  const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState(28);
   const [films, setFilms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +29,32 @@ const CategoryComponent = () => {
 
   useEffect(() => {
     const fetchGenre = () => {
+      setIsLoading(true);
+      axios
+        .get(`https://api.themoviedb.org/3/genre/movie/list?language=en`, {
+          headers: {
+            Authorization: import.meta.env.VITE_API_KEY,
+            accept: "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.genres);
+
+          setGenres([...response.data.genres]);
+        })
+        .catch((error) => {
+          console.log("Genre error", error.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    fetchGenre();
+  }, []);
+
+  useEffect(() => {
+    const fetchByGenre = () => {
       setIsLoading(true);
       axios
         .get(
@@ -43,12 +77,12 @@ const CategoryComponent = () => {
         });
     };
 
-    fetchGenre();
+    fetchByGenre();
   }, [selectedGenre]);
 
   return (
-    <div>
-      <h2>Category component</h2>
+    <SectionWrapper>
+      <CategoryTitle>Movies by category</CategoryTitle>
       <Wrapper>
         {Array.isArray(genres) &&
           genres.length > 0 &&
@@ -88,17 +122,17 @@ const CategoryComponent = () => {
                       src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
                       alt={film.original_title}
                     />
-                    <h3>{film.original_title}</h3>
+                    <MovieTitle>{film.original_title}</MovieTitle>
                   </div>
                 </ItemWrapper>
               );
             })}
         </Carousel>
       </div>
-      <NavLink to={"/movies"} state={{ selectedGenre: selectedGenre }}>
-        Get More
-      </NavLink>
-    </div>
+      <GetMoreLink to={"/movies"} state={{ selectedGenre: selectedGenre }}>
+        Explore More Films
+      </GetMoreLink>
+    </SectionWrapper>
   );
 };
 

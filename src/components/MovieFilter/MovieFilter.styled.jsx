@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const SectionTitleWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+`;
+
 export const FilterCatalogBtn = styled.button`
   background-color: transparent;
   border: none;
@@ -33,4 +39,9 @@ export const GenresItemTitle = styled.button`
   &.active {
     color: #ff5300;
   }
+`;
+
+export const FormLabel = styled.label`
+  font-size: 25px;
+  margin-right: 20px;
 `;

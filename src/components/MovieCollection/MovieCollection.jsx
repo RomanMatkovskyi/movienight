@@ -5,6 +5,7 @@ import {
   GalleryWrapper,
   MovieItemTitle,
   LoadMoreBtn,
+  NoMovieTitle,
 } from "./MovieCollection.styled";
 
 import MovieFilter from "../MovieFilter/MovieFilter";
@@ -12,11 +13,12 @@ import MovieFilter from "../MovieFilter/MovieFilter";
 const MovieCollection = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  let mainPageSelectedGenre = [location.state?.selectedGenre] || [];
+  let mainPageSelectedGenre = location.state?.selectedGenre
+    ? [location.state.selectedGenre]
+    : [];
 
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState(mainPageSelectedGenre);
 
@@ -86,6 +88,9 @@ const MovieCollection = () => {
         setCurrentPage={setCurrentPage}
         setMovies={setMovies}
       />
+      {movies.length === 0 && !isLoading && (
+        <NoMovieTitle>No movies found ... </NoMovieTitle>
+      )}
       <GalleryWrapper>
         {uniqueMovies.map((movie) => {
           if (!movie.poster_path || !movie.original_title) return null;
@@ -100,14 +105,16 @@ const MovieCollection = () => {
           );
         })}
       </GalleryWrapper>
-      <LoadMoreBtn
-        type="button"
-        onClick={() => {
-          setCurrentPage((prevState) => prevState + 1);
-        }}
-      >
-        Load more
-      </LoadMoreBtn>
+      {!isLoading && movies.length >= 20 && (
+        <LoadMoreBtn
+          type="button"
+          onClick={() => {
+            setCurrentPage((prevState) => prevState + 1);
+          }}
+        >
+          Load more
+        </LoadMoreBtn>
+      )}
     </div>
   );
 };

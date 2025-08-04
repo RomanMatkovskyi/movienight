@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import axios from "axios";
+
+import {
+  Wrapper,
+  CategoryTitle,
+  MovieTitle,
+  ItemWrapper,
+} from "./UpcomingMovies.styled";
 
 const responsive = {
   desktop: { breakpoint: { max: 1440, min: 1024 }, items: 7 },
@@ -42,8 +49,8 @@ const UpcomingMovies = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Upcoming movies</h2>
+    <Wrapper>
+      <CategoryTitle>Upcoming movies</CategoryTitle>
       {isLoading && <p>Data is loading ...</p>}
       <Carousel
         responsive={responsive}
@@ -52,22 +59,22 @@ const UpcomingMovies = () => {
         infinite={true}
         keyBoardControl={true}
         slidesToSlide={7}
-        // autoPlay // To add AutoPlay
-        // autoPlaySpeed={2000}
       >
         {upcomingMovies.map((film) => {
           return (
-            <div key={film.id}>
-              <img
-                src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
-                alt={film.original_title}
-              />
-              <h3>{film.original_title}</h3>
-            </div>
+            <ItemWrapper>
+              <div key={film.id}>
+                <img
+                  src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
+                  alt={film.original_title}
+                />
+                <MovieTitle>{film.original_title}</MovieTitle>
+              </div>
+            </ItemWrapper>
           );
         })}
       </Carousel>
-    </div>
+    </Wrapper>
   );
 };
 
