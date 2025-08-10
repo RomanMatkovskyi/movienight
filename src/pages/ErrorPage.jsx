@@ -1,14 +1,14 @@
 import { useLocation } from "react-router";
+import { Title } from "./ErrorPage.styled";
 
 const ErrorPage = () => {
   const location = useLocation();
   const message = location.state?.error;
-  console.log("Error", message);
 
   return (
     <div>
-      <h1>Uuuppppsss ... Something went wrong....</h1>
-      <p>Reason: {message}</p>
+      <Title>Uuuppppsss ... Something went wrong....</Title>
+      {message && <ErrorMessage>Reason: {message}</ErrorMessage>}
     </div>
   );
 };

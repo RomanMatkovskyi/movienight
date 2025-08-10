@@ -6,7 +6,7 @@ import {
   FormLabel,
 } from "./TvShowFilter.styled";
 
-const TvShowFilter = ({ shows, setShows, currentPage, setCurrentPage }) => {
+const TvShowFilter = ({ setShows, currentPage, setCurrentPage }) => {
   const firstRender = useRef(false);
 
   const [genres, setGenres] = useState([]);
