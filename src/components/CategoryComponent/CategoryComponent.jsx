@@ -8,6 +8,7 @@ import {
   SectionWrapper,
   Wrapper,
   GenreTitle,
+  StyledLink,
   ItemWrapper,
   CategoryTitle,
   MovieTitle,
@@ -38,8 +39,6 @@ const CategoryComponent = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.genres);
-
           setGenres([...response.data.genres]);
         })
         .catch((error) => {
@@ -116,15 +115,17 @@ const CategoryComponent = () => {
             films.length > 0 &&
             films.map((film) => {
               return (
-                <ItemWrapper key={film.id}>
-                  <div>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
-                      alt={film.original_title}
-                    />
-                    <MovieTitle>{film.original_title}</MovieTitle>
-                  </div>
-                </ItemWrapper>
+                <StyledLink to={`movies/${film.id}`} key={film.id}>
+                  <ItemWrapper>
+                    <div>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
+                        alt={film.original_title}
+                      />
+                      <MovieTitle>{film.original_title}</MovieTitle>
+                    </div>
+                  </ItemWrapper>
+                </StyledLink>
               );
             })}
         </Carousel>

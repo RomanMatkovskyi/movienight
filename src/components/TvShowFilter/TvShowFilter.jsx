@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import {
   GenresContainer,
+  FilterTitle,
   GenresItemTitle,
   FormLabel,
 } from "./TvShowFilter.styled";
@@ -139,7 +140,7 @@ const TvShowFilter = ({ setShows, currentPage, setCurrentPage }) => {
   return (
     <div>
       <GenresContainer>
-        <h2>Filter by genre</h2>
+        <FilterTitle>Filter by genre</FilterTitle>
         {genres.map((genre) => {
           return (
             <GenresItemTitle

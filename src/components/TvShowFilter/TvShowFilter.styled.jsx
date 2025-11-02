@@ -6,6 +6,10 @@ export const GenresContainer = styled.div`
   margin-bottom: 15px;
 `;
 
+export const FilterTitle = styled.h2`
+  color: #fff;
+`;
+
 export const GenresItemTitle = styled.button`
   color: #fff;
   background-color: transparent;

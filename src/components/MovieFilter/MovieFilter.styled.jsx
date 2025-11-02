@@ -6,6 +6,10 @@ export const SectionTitleWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
+export const FilterTitle = styled.h2`
+  color: #fff;
+`;
+
 export const FilterCatalogBtn = styled.button`
   background-color: transparent;
   border: none;

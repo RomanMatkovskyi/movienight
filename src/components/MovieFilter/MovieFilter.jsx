@@ -3,6 +3,7 @@ import axios from "axios";
 
 import {
   SectionTitleWrapper,
+  FilterTitle,
   GenresContainer,
   GenresItemTitle,
   FormLabel,
@@ -85,7 +86,7 @@ const Filter = ({
   return (
     <div>
       <SectionTitleWrapper>
-        <h2>Filter by genre</h2>
+        <FilterTitle>Filter by genre</FilterTitle>
         <GenresContainer>
           {genres.map((genre) => {
             return (

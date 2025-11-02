@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import { Link } from "react-router";
 import axios from "axios";
 import {
   GalleryWrapper,
+  StyledLink,
   MovieItemTitle,
   LoadMoreBtn,
   NoMovieTitle,
@@ -95,13 +97,13 @@ const MovieCollection = () => {
         {uniqueMovies.map((movie) => {
           if (!movie.poster_path || !movie.original_title) return null;
           return (
-            <div key={movie.id}>
+            <StyledLink to={`${movie.id}`} key={movie.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w185${movie.poster_path}`}
                 alt={movie.original_title}
               />
               <MovieItemTitle>{movie.original_title}</MovieItemTitle>
-            </div>
+            </StyledLink>
           );
         })}
       </GalleryWrapper>

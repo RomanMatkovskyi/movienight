@@ -6,6 +6,7 @@ import axios from "axios";
 import {
   Wrapper,
   CategoryTitle,
+  StyledLink,
   MovieTitle,
   ItemWrapper,
 } from "./HomePageMovies.styled";
@@ -64,13 +65,13 @@ const HomePageMovies = () => {
           {nowPlayingMovies.map((film) => {
             return (
               <ItemWrapper>
-                <div key={film.id}>
+                <StyledLink to={`movies/${film.id}`} key={film.id}>
                   <img
                     src={`https://image.tmdb.org/t/p/w154${film.poster_path}`}
                     alt=""
                   />
                   <MovieTitle>{film.original_title}</MovieTitle>
-                </div>
+                </StyledLink>
               </ItemWrapper>
             );
           })}

@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   Wrapper,
   CategoryTitle,
+  StyledLink,
   MovieImg,
   MovieTitle,
 } from "./TopRatedMovies.styled";
@@ -64,13 +65,13 @@ const TopRatedMovies = () => {
       >
         {topRatedMovies.map((film) => {
           return (
-            <div key={film.id}>
+            <StyledLink to={`movies/${film.id}`} key={film.id}>
               <MovieImg
                 src={`https://image.tmdb.org/t/p/original${film.backdrop_path}`}
                 alt={film.original_title}
               />
               <MovieTitle>{film.original_title}</MovieTitle>
-            </div>
+            </StyledLink>
           );
         })}
       </Carousel>
